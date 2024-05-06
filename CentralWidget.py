@@ -1,3 +1,4 @@
+from PyQt6.QtCore import pyqtSlot
 from PyQt6.QtWidgets import QWidget, QPushButton, QGridLayout, QLCDNumber
 
 
@@ -5,7 +6,10 @@ class CentralWidget(QWidget):
     def __init__(self, parent=None):
         super(CentralWidget, self).__init__(parent)
 
+        self.__current_value = ""
+
         push_button_1 = QPushButton("1")
+        push_button_1.released.connect(self.handle_1)
         push_button_2 = QPushButton("2")
         push_button_3 = QPushButton("3")
         push_button_4 = QPushButton("4")
@@ -51,3 +55,12 @@ class CentralWidget(QWidget):
         grid_layout.addWidget(push_button_div, 5, 4)
 
         self.setLayout(grid_layout)
+
+        # 1) Erstellen Sie für jedes Button einen passenden Slot.
+        # 2) Verbinden Sie jedes Button mit dem zugehörigen Slot.
+
+    @pyqtSlot()
+    def handle_1(self):
+        self.__current_value += "1"
+
+        self.display.display(self.__current_value)
