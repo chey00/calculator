@@ -9,7 +9,6 @@ class CentralWidget(QWidget):
         self.__current_value = ""
 
         push_button_1 = QPushButton("1")
-        push_button_1.released.connect(self.handle_1)
         push_button_2 = QPushButton("2")
         push_button_3 = QPushButton("3")
         push_button_4 = QPushButton("4")
@@ -19,8 +18,20 @@ class CentralWidget(QWidget):
         push_button_8 = QPushButton("8")
         push_button_9 = QPushButton("9")
         push_button_0 = QPushButton("0")
-
         push_button_dot = QPushButton(".")
+
+        push_button_1.released.connect(self.handle_1)
+        push_button_2.released.connect(self.handle_2)
+        push_button_3.released.connect(self.handle_3)
+        push_button_4.released.connect(self.handle_4)
+        push_button_5.released.connect(self.handle_5)
+        push_button_6.released.connect(self.handle_6)
+        push_button_7.released.connect(self.handle_7)
+        push_button_8.released.connect(self.handle_8)
+        push_button_9.released.connect(self.handle_9)
+        push_button_0.released.connect(self.handle_0)
+        push_button_dot.released.connect(self.handle_dot)
+
         push_button_equal = QPushButton("=")
 
         push_button_add = QPushButton("+")
@@ -56,11 +67,68 @@ class CentralWidget(QWidget):
 
         self.setLayout(grid_layout)
 
-        # 1) Erstellen Sie für jedes Button einen passenden Slot.
-        # 2) Verbinden Sie jedes Button mit dem zugehörigen Slot.
-
     @pyqtSlot()
     def handle_1(self):
         self.__current_value += "1"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_2(self):
+        self.__current_value += "2"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_3(self):
+        self.__current_value += "3"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_4(self):
+        self.__current_value += "4"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_5(self):
+        self.__current_value += "5"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_6(self):
+        self.__current_value += "6"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_7(self):
+        self.__current_value += "7"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_8(self):
+        self.__current_value += "8"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_9(self):
+        self.__current_value += "9"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_0(self):
+        self.__current_value += "0"
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_dot(self):
+        self.__current_value += "."
 
         self.display.display(self.__current_value)
