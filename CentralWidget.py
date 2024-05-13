@@ -6,7 +6,9 @@ class CentralWidget(QWidget):
     def __init__(self, parent=None):
         super(CentralWidget, self).__init__(parent)
 
+        self.__last_value = ""
         self.__current_value = ""
+        self.__operator = ""
 
         push_button_1 = QPushButton("1")
         push_button_2 = QPushButton("2")
@@ -33,11 +35,17 @@ class CentralWidget(QWidget):
         push_button_dot.released.connect(self.handle_dot)
 
         push_button_equal = QPushButton("=")
+        push_button_equal.released.connect(self.handle_equal)
 
         push_button_add = QPushButton("+")
         push_button_sub = QPushButton("-")
         push_button_mul = QPushButton("*")
         push_button_div = QPushButton("/")
+
+        push_button_add.released.connect(self.handle_add)
+        push_button_sub.released.connect(self.handle_sub)
+        push_button_mul.released.connect(self.handle_mul)
+        push_button_div.released.connect(self.handle_div)
 
         self.display = QLCDNumber()
 
@@ -130,5 +138,62 @@ class CentralWidget(QWidget):
     @pyqtSlot()
     def handle_dot(self):
         self.__current_value += "."
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_add(self):
+        self.__operator = "+"
+
+        self.__last_value = self.__current_value
+        self.__current_value = ""
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_sub(self):
+        self.__operator = "-"
+
+        self.__last_value = self.__current_value
+        self.__current_value = ""
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_mul(self):
+        self.__operator = "*"
+
+        self.__last_value = self.__current_value
+        self.__current_value = ""
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_div(self):
+        self.__operator = "/"
+
+        self.__last_value = self.__current_value
+        self.__current_value = ""
+
+        self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_equal(self):
+        left_value = float(self.__current_value)
+        right_value = float(self.__last_value)
+
+        result = left_value
+        if self.__operator == "/":
+            result = left_value / right_value
+        elif self.__operator == "*":
+            result = left_value * right_value
+        elif self.__operator == "+":
+            result = left_value + right_value
+        elif self.__operator == "-":
+            result = left_value - right_value
+        else:
+            print("No operator set")
+
+        self.__current_value = str(result)
 
         self.display.display(self.__current_value)
