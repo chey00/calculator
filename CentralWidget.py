@@ -20,7 +20,6 @@ class CentralWidget(QWidget):
         push_button_8 = QPushButton("8")
         push_button_9 = QPushButton("9")
         push_button_0 = QPushButton("0")
-        push_button_dot = QPushButton(".")
 
         push_button_1.released.connect(self.handle_1)
         push_button_2.released.connect(self.handle_2)
@@ -32,10 +31,18 @@ class CentralWidget(QWidget):
         push_button_8.released.connect(self.handle_8)
         push_button_9.released.connect(self.handle_9)
         push_button_0.released.connect(self.handle_0)
+
+        push_button_dot = QPushButton(".")
+        push_button_sign = QPushButton("(-)")
+
         push_button_dot.released.connect(self.handle_dot)
+        push_button_sign.released.connect(self.handle_sign)
 
         push_button_equal = QPushButton("=")
+        push_button_clear = QPushButton("clear")
+
         push_button_equal.released.connect(self.handle_equal)
+        push_button_clear.released.connect(self.handle_clear)
 
         push_button_add = QPushButton("+")
         push_button_sub = QPushButton("-")
@@ -70,8 +77,11 @@ class CentralWidget(QWidget):
 
         grid_layout.addWidget(push_button_0, 5, 1)
         grid_layout.addWidget(push_button_dot, 5, 2)
-        grid_layout.addWidget(push_button_equal, 5, 3)
+        grid_layout.addWidget(push_button_sign, 5, 3)
         grid_layout.addWidget(push_button_div, 5, 4)
+
+        grid_layout.addWidget(push_button_clear, 6, 1, 1, 2)
+        grid_layout.addWidget(push_button_equal, 6, 3, 1, 2)
 
         self.setLayout(grid_layout)
 
@@ -142,6 +152,17 @@ class CentralWidget(QWidget):
         self.display.display(self.__current_value)
 
     @pyqtSlot()
+    def handle_sign(self):
+        try:
+            if self.__current_value[0] != "-":
+                self.__current_value = "-" + self.__current_value
+        except IndexError:
+            self.display.display("error")
+        else:
+            self.display.display(self.__current_value)
+
+
+    @pyqtSlot()
     def handle_add(self):
         self.__operator = "+"
 
@@ -184,16 +205,23 @@ class CentralWidget(QWidget):
 
         result = left_value
         if self.__operator == "/":
-            result = left_value / right_value
+            result = right_value / left_value
         elif self.__operator == "*":
-            result = left_value * right_value
+            result = right_value * left_value
         elif self.__operator == "+":
-            result = left_value + right_value
+            result = right_value + left_value
         elif self.__operator == "-":
-            result = left_value - right_value
+            result = right_value - left_value
         else:
             print("No operator set")
 
         self.__current_value = str(result)
 
         self.display.display(self.__current_value)
+
+    @pyqtSlot()
+    def handle_clear(self):
+        self.__current_value = ""
+        self.__last_value  = ""
+
+        self.display.display("---")
