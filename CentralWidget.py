@@ -6,9 +6,11 @@ class CentralWidget(QWidget):
     def __init__(self, parent=None):
         super(CentralWidget, self).__init__(parent)
 
-        self.__last_value = ""
-        self.__current_value = ""
-        self.__operator = ""
+        self.__last_value = None
+        self.__current_value = None
+        self.__operator = None
+
+        self.handle_clear()
 
         push_button_1 = QPushButton("1")
         push_button_2 = QPushButton("2")
@@ -49,10 +51,10 @@ class CentralWidget(QWidget):
         push_button_mul = QPushButton("*")
         push_button_div = QPushButton("/")
 
-        push_button_add.released.connect(self.handle_add)
-        push_button_sub.released.connect(self.handle_sub)
-        push_button_mul.released.connect(self.handle_mul)
-        push_button_div.released.connect(self.handle_div)
+        push_button_add.released.connect(self.handle_operator)
+        push_button_sub.released.connect(self.handle_operator)
+        push_button_mul.released.connect(self.handle_operator)
+        push_button_div.released.connect(self.handle_operator)
 
         self.display = QLCDNumber()
 
@@ -101,37 +103,9 @@ class CentralWidget(QWidget):
         else:
             self.display.display(self.__current_value)
 
-
     @pyqtSlot()
-    def handle_add(self):
-        self.__operator = "+"
-
-        self.__last_value = self.__current_value
-        self.__current_value = ""
-
-        self.display.display(self.__current_value)
-
-    @pyqtSlot()
-    def handle_sub(self):
-        self.__operator = "-"
-
-        self.__last_value = self.__current_value
-        self.__current_value = ""
-
-        self.display.display(self.__current_value)
-
-    @pyqtSlot()
-    def handle_mul(self):
-        self.__operator = "*"
-
-        self.__last_value = self.__current_value
-        self.__current_value = ""
-
-        self.display.display(self.__current_value)
-
-    @pyqtSlot()
-    def handle_div(self):
-        self.__operator = "/"
+    def handle_operator(self):
+        self.__operator = self.sender().text()
 
         self.__last_value = self.__current_value
         self.__current_value = ""
@@ -161,7 +135,8 @@ class CentralWidget(QWidget):
 
     @pyqtSlot()
     def handle_clear(self):
-        self.__current_value = ""
+        self.__current_value = "123"
         self.__last_value = ""
+        self.__operator = ""
 
         self.display.display("---")
